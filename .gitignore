@@ -1,0 +1,30 @@
+# Google OAuth認証ファイル
+credentials.json
+token.json
+
+# 環境変数・APIキー
+.env
+.env.*
+*.key
+*_key.json
+*_credentials.json
+*_secret.json
+service_account.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# macOS
+.DS_Store
+
+# 一時ファイル
+/tmp/
+*.tmp
