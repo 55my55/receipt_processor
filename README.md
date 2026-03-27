@@ -1,20 +1,32 @@
 # receipt_processor
 
-レシート・領収書を自動処理して経費一覧スプレッドシートに記録するツール。
+## 概要
+個人事業主の確定申告のレシート管理を自動化するツール。
+Google Drive上のスキャン画像をGemini APIで読み取り、日付・金額・店名を抽出してGoogleスプレッドシートに自動記録する。
 
-## 処理の流れ
+## 技術構成
+- 言語：Python
+- OCR：Gemini API（Vision）
+- ストレージ：Google Drive API
+- 出力：Google Sheets API
+- 認証：OAuth2（credentials.json）
 
-1. **Google Drive** の入力フォルダからPDF・画像を取得
-2. **Gemini Vision API** でOCR（日付・店名・金額・勘定科目を抽出）
-3. **Google Calendar** を照合して接待交際費の内容を補完
-4. 処理済み画像を **Google Drive** の出力フォルダに保存
-5. **Google スプレッドシート** の「経費一覧」シートに追記
+## 技術選定方針
+**OCRエンジンの選定**
+無料枠での運用にこだわり、コスト0で使えるOCRエンジンの組み合わせを検討。
+当初Google Cloud Vision APIを試したが、Gemini APIの方が無料枠が広く、プロンプトで抽出項目を柔軟に指定できる点も優れていたため移行。
 
-## 必要なもの
+## 設計方針
+- Google Driveの特定フォルダを監視し、未処理画像を順次処理
+- 処理済みファイルは別フォルダに移動し二重処理を防止
 
-- Python 3.10+
-- Google Cloud プロジェクト（Drive / Calendar / Sheets API を有効化）
-- Gemini API キー
+## 制限事項
+- 無料枠のレートリミットにより大量処理には向いていない
+- 処理速度は1枚あたり数秒程度（無料枠内での運用を優先したトレードオフ）
+
+## 今後の展望
+- ブラウザからカメラ起動→撮影→即時処理できるWebアプリ化
+- Google Driveへの依存をなくし、スマホだけで完結する構成へ
 
 ## セットアップ
 
